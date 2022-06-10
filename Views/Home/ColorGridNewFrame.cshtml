@@ -1,0 +1,140 @@
+﻿@model DataTransferBase64;
+
+@{ string str = Model.base64[0];}
+
+<div>
+    <div>
+        <div>
+            <img id="image0" src="" />
+        </div>
+        <div>
+            <img id="image1" src="" />
+        </div>
+        <div>
+            <img id="image2" src="" />
+        </div>
+        <div>
+            <img id="image3" src="" />
+        </div>
+        <div>
+            <img id="image4" src="" />
+        </div>
+        <div>
+            <img id="image5" src="" />
+        </div>
+    </div>
+</div>
+
+<form id="frame" hidden>
+    <input name="num" type="number" value="30" />
+    <input name="lastframe" type="number" value="@Model.frame" />
+</form>
+
+<script>
+    var pos = 0;
+    var img1 = [];
+    var tm;
+
+
+    @foreach (var s in Model.base64)
+    {
+            @:img1.push("@Html.Raw(s)");
+    }
+
+
+    console.log(img1.length + " length");
+
+
+    function slide_show()
+    {
+        document.getElementById("image0").src = "data:image/png;base64," + img1[pos * 6];
+        document.getElementById("image1").src = "data:image/png;base64," + img1[pos * 6 + 1];
+        document.getElementById("image2").src = "data:image/png;base64," + img1[pos * 6 + 2];
+        document.getElementById("image3").src = "data:image/png;base64," + img1[pos * 6 + 3];
+        document.getElementById("image4").src = "data:image/png;base64," + img1[pos * 6 + 4];
+        document.getElementById("image5").src = "data:image/png;base64," + img1[pos * 6 + 5];
+        console.log(pos + " pos");
+        pos++;
+        if (pos >= (img1.length / 6) - 1)
+        {
+            console.log(pos + " pos");
+            img1 = [];
+            clearInterval(tm);
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "../Home/ColorGridNewFrame",
+                    data: $("#frame").serialize(),
+                    statusCode:
+                    {
+
+                        500: function () {
+                            console.log("500 status new frame");
+                            setTimeout(RepeatRequest(), 1000);
+                            return
+                        },
+                        501: function () {
+                            console.log("501 status new frame");
+                            return
+                        }
+                    },
+                    success: function (result)
+                    {
+                        document.getElementById("example").innerHTML = "";
+                        $("#example").html(result);
+                        console.log("2success");
+                    }
+
+                });
+        }
+    }
+
+    function RepeatRequest()
+    {
+        $.ajax(
+            {
+                type: "POST",
+                url: "../Home/ColorGridNewFrame",
+                data: $("#frame").serialize(),
+                statusCode:
+                {
+                    500: function () {
+                        console.log("500 status new frame");
+                        setTimeout(RepeatRequest(), 1000);
+                        return
+                    },
+                    501: function () {
+                        console.log("501 status new frame");
+                        return
+                    }
+                },
+                success: function (result) {
+                    document.getElementById("example").innerHTML = "";
+                    $("#example").html(result);
+                    console.log("2success");
+                },
+
+            });
+    }
+
+    function mode()
+    {
+        pos = 0;
+        console.log(pos);
+        $.ajax(
+            {
+                type: "POST",
+                url: "../Home/ColorGridStart",
+                data: $("#frame").serialize(),
+                success: function (result)
+                {
+                        document.getElementById("example").innerHTML = "";
+                        $("#example").html(result);
+                        console.log("2success");
+                }
+            });
+        tm = setInterval("slide_show()", 500);
+    }
+
+    mode();
+</script>

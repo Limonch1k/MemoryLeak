@@ -1,0 +1,342 @@
+﻿@model DataTransferForm
+<div>
+
+
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        #param_div {
+            float: left;
+            width: 30%;
+            height: 700px;
+            text-align: center;
+            position: relative;
+        }
+
+        #plots_div {
+            width: 60%;
+            height: 700px;
+            float: left;
+            background-color: white;
+        }
+
+        .plot {
+            width: 400px;
+            height: 250px;
+            margin: 10px 10px 10px 10px;
+            float: left;
+            background-color: rgb(251, 251, 251);
+        }
+
+        form {
+            margin: 15px 0 0 0;
+        }
+
+        #step {
+            width: 100%;
+            height: 30%;
+            position: absolute;
+            text-align: center;
+            background: aliceblue;
+            border-radius: 30px;
+            vertical-align: bottom;
+            margin-top: 50px;
+            font-weight: 500;
+        }
+
+            #step label {
+                display: block;
+                margin-top: 10px;
+            }
+
+            #step button {
+                display: block;
+                margin: 10px auto;
+            }
+
+
+        dialog {
+            width: 30%;
+            height: auto;
+            border-radius: 1px;
+            border-width: 1px;
+            left: 50%;
+        }
+
+            dialog #window {
+                width: 100%;
+                height: auto;
+                max-height: 20em;
+                overflow: auto;
+            }
+
+        .plot img {
+            width: 400;
+            height: 200;
+        }
+
+        .plot p {
+            margin: 0;
+            text-align: center;
+        }
+
+        form label {
+            display: inline-block;
+            font-size: 1em;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: black;
+            font-weight: 500;
+            width: 6em;
+            margin-right: 1em;
+        }
+
+        form input {
+            width: 5em;
+            border: 0px;
+        }
+
+        #param_form {
+            border: 1px solid white;
+            border-radius: 30px;
+            background: aliceblue;
+            height: 40%;
+        }
+
+        #step button {
+            width: 6em;
+            height: 2.5em;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 30px;
+        }
+    </style>
+    <dialog>
+        <div id="window">
+            <p>
+                Рассмотрим гидродинамическую задачу обтекания  потоком прямоугольного препятствия. Описание движения сплошной среды сводится к расчету поля скоростей. Движение сплошной среды полностью описано, если найдено поле скоростей, то есть в каждой точке рассматриваемой части пространства задан вектор скорости, в общем случае, зависящий от времени. Иными словами, требуется определить функцию  . Физической основой описания движения сплошной среды является система уравнений Навье-Стокса.
+                В данной работе используется следующее основное приближение: воздух рассматривается как несжимаемая жидкость. В этом приближении все характеристики воздуха, в частности его плотность и вязкость считаются известными и постоянными величинами, поэтому отпадает необходимость рассмотрения термодинамических уравнений, описывающих потоки теплоты, изменение температуры и т.д.
+            </p>
+
+        </div>
+        <button id="close">Закрыть</button>
+    </dialog>
+    <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Лабораторная работа по моделирования обтекания препятствия двумерной задачи гидродинамики </h2>
+    <script>
+        var dialog = document.querySelector('dialog');
+        document.querySelector('#close').onclick = function () {
+            dialog.close();
+        };
+        document.addEventListener('keydown', function (event) {
+            if (event.code == 'F2') {
+                dialog.show();
+            }
+        });
+    </script>
+    <div id="param_div">
+        <h3>Параметры</h3>
+        <div>
+            <form id="param_form">
+                <div class="param_form">
+                    <label>L, m</label>
+                    <input type="text" class="input" name="L" id="L_input" value="10">
+                </div>
+                <div class="param_form">
+                    <label>U0, m/s</label>
+                    <input type="text" class="input" name="U0" id="U0_input" value="10">
+                </div>
+                <div class="param_form">
+                    <label>nju, m2/s</label>
+                    <input type="text" class="input" name="nju" id="nju_input" value="0.15">
+                </div>
+                <div class="param_form">
+                    <label>diff, m2/s</label>
+                    <input type="text" class="input" name="diff" id="diff_value" value="0">
+                </div>
+                <div class="param_form">
+                    <label>R source, m</label>
+                    <input type="text" class="input" name="R" id="R_value" value="10">
+                </div>
+                <div class="param_form">
+                    <label>dt</label>
+                    <input type="text" class="input" name="dt" id="dt_value" value="0.001">
+                </div>
+                <div class="param_form">
+                    <label>dx</label>
+                    <input type="text" class="input" name="dx" id="dx_value" value="0.1">
+                </div>
+            </form>
+        </div>
+        <div id="step">
+            <label></label>
+            <label></label>
+            <form id="panel_form">
+                <button type="button" id="start">Старт</button>
+                <button type="button" id="stop">Стоп</button>
+                <button type="button" id="startnew">Сначала</button>
+            </form>
+        </div>
+    </div>
+    <div id="plots_div">
+        <div class="plot" id="plot1">
+            <p>U(x,y) м/сек</p>
+            <img id="image0">
+        </div>
+        <div class="plot" id="plot2">
+            <p>Течение с частицами пыли</p>
+            <img id="image1">
+        </div>
+        <div class="plot" id="plot3">
+            <p>V(x,y) м/сек</p>
+            <img id="image2">
+        </div>
+        <div class="plot" id="plot4">
+            <p>Завихренность 1/сек</p>
+            <img id="image3">
+        </div>
+        <div class="plot" id="plot5">
+            <p>Модуль скорости м/сек</p>
+            <img id="image4">
+        </div>
+        <div class="plot" id="plot6">
+            <p>Функция тока</p>
+            <img id="image5">
+        </div>
+    </div>
+    <div id="example">
+
+    </div>
+
+    <form id="check" hidden>
+        <input name="num" type="number" value="-1" />
+        <input name="lastframe" type="number" value="-1" />
+    </form>
+
+
+    <script>
+        var img1 = [];
+        var tm;
+        var bool = 0;
+
+
+        document.getElementById("stop").onclick = callme;
+        function callme() {
+            console.log("stop was called");
+            alert("animate was stop");
+            clearInterval(tm);
+            tm = null;
+
+        }
+
+        document.getElementById("startnew").onclick = startnew;
+        function startnew() {
+            if (img1.length == 0) {
+                return;
+            }
+            else {
+                clearInterval(tm);
+                img1 = [];
+                console.log("start was called");
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "../Home/ColorGridNewFrame",
+                        data: $("#check").serialize(),
+                        statusCode:
+                        {
+                            500: function () {
+                                console.log("500 status new frame");
+                                setTimeout(RepeatRequestcheck, 1000);
+                                return
+                            },
+                            501: function () {
+                                console.log("501 status new frame");
+                                return
+                            },
+                            200: function () {
+                                $.ajax(
+                                    {
+                                        type: "POST",
+                                        url: "../Home/ColorGrid",
+                                        data: $("#param_form").serialize(),
+                                        success: function (result) {
+                                            $("#example").html(result);
+                                            bool = 0;
+                                        }
+                                    });
+                            }
+                        },
+                    });
+            }
+        }
+
+        function RepeatRequestcheck() {
+            console.log("RepeatRequest start");
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "../Home/ColorGridNewFrame",
+                    data: $("#check").serialize(),
+                    statusCode:
+                    {
+                        500: function () {
+                            console.log("500 status new frame");
+                            setTimeout(RepeatRequestcheck, 1000);
+                            return
+                        },
+                        501: function () {
+                            console.log("501 status new frame");
+                            return
+                        },
+                        200: function () {
+                            $.ajax(
+                                {
+                                    type: "POST",
+                                    url: "../Home/ColorGrid",
+                                    data: $("#param_form").serialize(),
+                                    success: function (result) {
+                                        $("#example").html(result);
+                                        bool = 0;
+                                    }
+                                });
+                        }
+                    },
+
+                });
+        }
+
+
+        document.getElementById("start").onclick = start;
+        function start() {
+            if (img1.length != 0 || bool == 1) {
+                console.log("animate continues");
+                if (tm != null || bool == 1) {
+                    console.log("break");
+                    return;
+                }
+                else {
+                    tm = setInterval("slide_show()", 500);
+                }
+
+            }
+            else {
+                bool = 1;
+                console.log("start was called");
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "../Home/ColorGrid",
+                        data: $("#param_form").serialize(),
+                        success: function (result) {
+                            $("#example").html(result);
+                            bool = 0;
+                        }
+                    });
+            }
+        }
+
+
+    </script>
+
+</div>

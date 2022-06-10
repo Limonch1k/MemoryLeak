@@ -1,0 +1,51 @@
+﻿@model DataTransferForm
+
+
+<form id="dataform" method="post" >
+    <label for="L">L, m</label>
+    <input name="L" type="text" value="@Model.L" />
+    <p>
+        <label for="U0">U0, m/s</label>
+        <input name="U0" id="U0" type="text" value="@Model.U0" />
+    </p>
+    <p>
+        <label for="nju">nju, m2/s</label>
+        <input name="nju" id="nju" type="text" value="@Model.nju" />
+    </p>
+    <p>
+        <label for="diff">diff, m2/s</label>
+        <input name="diff" id="diff" type="text" value="@Model.diff" />
+    </p>
+    <p>
+        <label for="R">R source, m</label>
+        <input name="R" id="R" type="text" value="@Model.R" />
+    </p>
+    <p>
+        <label for="dt">dt</label>
+        <input name="dt" id="dt" type="text" value="@Model.dt" />
+    </p>
+    <p>
+        <label for="dx">dx</label>
+        <input name="dx" id="dx" type="text" value="@Model.dx" />
+    </p>
+    <input type="submit" value="Send">
+</form>
+
+ <div id="example">
+ </div>
+
+<script>
+    $("#dataform").on("submit", function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+            {
+                type: "POST",
+                url: "../Home/ColorGrid",
+                data: $("#dataform").serialize(),
+                success: function (result) {
+                    $("#example").html(result);
+                }
+            });
+    });
+</script>

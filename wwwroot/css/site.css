@@ -1,0 +1,126 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+body
+{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+#param_div
+{
+  float:left;
+  width: 30%;
+  height: 700px;
+  text-align: center;
+  position: relative;
+}
+
+#plots_div
+{
+  width: 60%;
+  height: 700px;
+  float:left;
+  background-color: white;
+}
+
+.plot
+{
+  width: 400px;
+  height: 250px;
+  margin:10px 10px 10px 10px;
+  float:left;
+  background-color: rgb(251, 251, 251); 
+}
+form
+{
+  margin:15px 0 0 0;
+}
+
+#step
+{
+  width:100%;
+  height: 30%;
+  position:absolute;
+  text-align: center;
+  background: aliceblue;
+  border-radius: 30px;
+  vertical-align: bottom;
+  margin-top: 50px;
+  font-weight: 500;
+}
+
+#step label
+{
+  display:block;
+  margin-top: 10px;
+}
+
+#step button
+{
+  display:block;
+  margin:10px auto;
+}
+
+
+dialog
+{
+  width: 30%;
+  height: auto;
+  border-radius: 1px;
+  border-width: 1px;
+  left:50%;
+}
+
+dialog #window
+{
+  width: 100%;
+  height: auto;
+  max-height: 20em;
+  overflow: auto; 
+}
+
+.plot img
+{
+  width: 400;
+  height: 200;
+  
+}
+
+.plot p
+{
+  margin: 0;
+  text-align: center;
+}
+
+form label
+{
+  display:inline-block;
+  font-size: 1em;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: black;
+  font-weight:500;
+  width: 6em;
+  margin-right: 1em;
+  
+}
+
+form input
+{
+  width: 5em;
+  border: 0px;
+}
+
+#param_form
+{
+  border: 1px solid white;
+  border-radius: 30px;
+  background: aliceblue;
+  height: 40%;
+}
+
+#step button
+{
+  width: 6em;
+  height: 2.5em;
+  background-color: white;
+  border:1px solid black;
+  border-radius: 30px;
+}

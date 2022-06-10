@@ -1,0 +1,18 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "Autorization";
+}
+
+
+<form asp-action="Login" asp-controller="Login" method="post">
+    <label asp-for="Email">Email</label>
+    <input asp-for="Email" type="text">
+    <p><label asp-for="Password">Password</label>
+    <input asp-for="Password" type="text"></p>
+    <input type="submit" value="Send">
+</form>
+
+<form asp-action="Registration" asp-controller="Login" method="get">
+    <input type="submit" value="Registration">
+</form>
